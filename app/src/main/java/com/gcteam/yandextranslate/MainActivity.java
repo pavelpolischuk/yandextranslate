@@ -1,0 +1,75 @@
+package com.gcteam.yandextranslate;
+
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class MainActivity extends AppCompatActivity
+        implements BottomNavigationView.OnNavigationItemSelectedListener,
+            ViewPager.OnPageChangeListener {
+
+    @BindView(R.id.pager)
+    ViewPager viewPager;
+
+    @BindView(R.id.navigation)
+    BottomNavigationView bottomNavigation;
+
+    PagerAdapter pagerAdapter;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+
+        pagerAdapter = new PagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(pagerAdapter);
+        bottomNavigation.setOnNavigationItemSelectedListener(this);
+        viewPager.addOnPageChangeListener(this);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.navigation_home:
+                viewPager.setCurrentItem(0);
+                return true;
+            case R.id.navigation_dashboard:
+                viewPager.setCurrentItem(1);
+                return true;
+            case R.id.navigation_notifications:
+                viewPager.setCurrentItem(2);
+                return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        switch (position) {
+            case 0:
+                bottomNavigation.setSelectedItemId(R.id.navigation_home);
+                break;
+            case 1:
+                bottomNavigation.setSelectedItemId(R.id.navigation_dashboard);
+                break;
+            case 2:
+                bottomNavigation.setSelectedItemId(R.id.navigation_notifications);
+                break;
+        }
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+    }
+}
