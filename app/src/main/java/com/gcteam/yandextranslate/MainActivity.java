@@ -7,12 +7,16 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import com.activeandroid.ActiveAndroid;
+import com.gcteam.yandextranslate.api.YandexTranslateApi;
+import com.gcteam.yandextranslate.api.YandexTranslateApiProvider;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity
         implements BottomNavigationView.OnNavigationItemSelectedListener,
-            ViewPager.OnPageChangeListener {
+            ViewPager.OnPageChangeListener, IYandexTranslateApiProvider {
 
     @BindView(R.id.pager)
     ViewPager viewPager;
@@ -22,16 +26,21 @@ public class MainActivity extends AppCompatActivity
 
     PagerAdapter pagerAdapter;
 
+    YandexTranslateApi translateApi;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        ActiveAndroid.initialize(this);
 
         pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
         bottomNavigation.setOnNavigationItemSelectedListener(this);
         viewPager.addOnPageChangeListener(this);
+
+        translateApi = YandexTranslateApiProvider.get(this).api();
     }
 
     @Override
@@ -71,5 +80,10 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onPageScrollStateChanged(int state) {
+    }
+
+    @Override
+    public YandexTranslateApi api() {
+        return translateApi;
     }
 }

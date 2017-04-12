@@ -18,8 +18,8 @@ public class RxFragment extends Fragment {
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onDestroy() {
+        super.onDestroy();
 
         if(!disposables.isDisposed()) {
             this.disposables.dispose();
