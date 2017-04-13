@@ -7,7 +7,6 @@ import com.gcteam.yandextranslate.api.dto.Translation;
 import java.util.Map;
 
 import io.reactivex.Observable;
-import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -23,10 +22,10 @@ public interface YandexTranslateApi {
 
     @FormUrlEncoded
     @POST("v1.5/tr.json/translate")
-    Call<Translation> translate(@Query("key") String apiKey,
-                                @Field("text") String text,
-                                @Query("lang") String lang,
-                                @QueryMap Map<String, String> options);
+    Observable<Translation> translate(@Query("key") String apiKey,
+                                      @Field("text") String text,
+                                      @Query("lang") String lang,
+                                      @QueryMap Map<String, String> options);
 
     @FormUrlEncoded
     @GET("v1.5/tr.json/detect")

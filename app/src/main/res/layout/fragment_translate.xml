@@ -41,7 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="?attr/actionBarSize"
-        android:padding="@dimen/activity_margin">
+        android:padding="@dimen/fragment_margin">
 
         <EditText android:id="@+id/source_text"
             android:layout_width="match_parent"

@@ -1,7 +1,11 @@
 package com.gcteam.yandextranslate.services;
 
+import android.content.Context;
+import android.support.annotation.Nullable;
 import android.util.Pair;
 
+import com.gcteam.yandextranslate.R;
+import com.gcteam.yandextranslate.api.YandexService;
 import com.gcteam.yandextranslate.api.dto.AvailableLanguages;
 import com.gcteam.yandextranslate.domain.Direction;
 import com.gcteam.yandextranslate.domain.Language;
@@ -13,20 +17,40 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
-import io.reactivex.functions.Consumer;
+import io.reactivex.Observable;
 import io.reactivex.functions.Function;
 
-/**
- * Created by turist on 07.04.2017.
- */
+public class LanguagesService implements Serializable {
 
-public class LanguagesService implements Consumer<AvailableLanguages>, Serializable {
+    private static LanguagesService instance;
 
     private Language[] languages;
     private HashMap<String, Language> mapCodeToName;
 
-    @Override
-    public void accept(AvailableLanguages availableLanguages) throws Exception {
+    @Nullable
+    public static LanguagesService get() {
+        return instance;
+    }
+
+    public static Observable<LanguagesService> get(Context context) {
+        if(instance != null) {
+            return Observable.just(instance);
+        }
+
+        Function<AvailableLanguages, LanguagesService> createInstance = new Function<AvailableLanguages, LanguagesService>() {
+            @Override
+            public LanguagesService apply(AvailableLanguages availableLanguages) throws Exception {
+                instance = new LanguagesService(availableLanguages);
+                return instance;
+            }
+        };
+
+        return YandexService.get()
+                .getLangs(context.getString(R.string.ui_code))
+                .map(createInstance);
+    }
+
+    private LanguagesService(AvailableLanguages availableLanguages) {
         this.languages = new Language[availableLanguages.langs.size()];
         this.mapCodeToName = new HashMap<>();
 
@@ -45,10 +69,12 @@ public class LanguagesService implements Consumer<AvailableLanguages>, Serializa
         });
     }
 
+
     public Language[] sortedLanguages() {
         return languages;
     }
 
+    @Nullable
     public Language language(String code) {
         if(mapCodeToName.containsKey(code)) {
             return mapCodeToName.get(code);
@@ -70,6 +96,7 @@ public class LanguagesService implements Consumer<AvailableLanguages>, Serializa
         return dirs;
     }
 
+    @Nullable
     public Direction firstDirection() {
         if(languages.length >= 2) {
             return new Direction(languages[0], languages[1]);
@@ -82,6 +109,15 @@ public class LanguagesService implements Consumer<AvailableLanguages>, Serializa
         return null;
     }
 
+    public static Observable<Direction> direction(Pair<String, String> pair) {
+        if(instance == null) {
+            return Observable.empty();
+        }
+
+        return Observable.just(instance.direction(pair.first, pair.second));
+    }
+
+    @Nullable
     public Direction direction(String from, String to) {
 
         Language first = language(from);
@@ -92,16 +128,5 @@ public class LanguagesService implements Consumer<AvailableLanguages>, Serializa
         }
 
         return new Direction(first, second);
-    }
-
-
-    public Function<AvailableLanguages, Direction> acceptAndGiveDirection(final Pair<String, String> codes) {
-        return new Function<AvailableLanguages, Direction>() {
-            @Override
-            public Direction apply(AvailableLanguages availableLanguages) throws Exception {
-                accept(availableLanguages);
-                return direction(codes.first, codes.second);
-            }
-        };
     }
 }

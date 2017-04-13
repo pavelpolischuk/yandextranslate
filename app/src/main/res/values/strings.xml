@@ -3,17 +3,19 @@
 
     <string name="title_translate">Translate</string>
     <string name="title_bookmarks">Bookmarks</string>
+    <string name="title_history">History</string>
     <string name="title_info">Information</string>
 
-    <string name="ui_code">en</string>
-    
-    <string name="api_url" translatable="false">https://translate.yandex.net/api/</string>
-    <string name="api_key" translatable="false">trnsl.1.1.20170405T161139Z.bdeadca16f808a8d.ab838d768232c3737ff17ec095f314752bb02532</string>
+    <string name="ui_code" translatable="false">en</string>
 
     <string name="select_language">Select language</string>
 
     <string name="translate_error">An error occurred</string>
     <string name="bookmark_added">Bookmark added</string>
     <string name="nothing_to_save">Nothing to save</string>
+
+    <string name="connection_error_when_start">Connection error.\n\nTranslating is not enable.\n\nClick this text to reconnect.</string>
+    <string name="history_search_text">Find in the history</string>
+    <string name="bookmarks_search_text">Find in the bookmarks</string>
 
 </resources>

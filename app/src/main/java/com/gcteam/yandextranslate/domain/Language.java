@@ -1,28 +1,15 @@
 package com.gcteam.yandextranslate.domain;
 
-import com.activeandroid.Model;
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
-
 /**
  * Created by turist on 07.04.2017.
  */
 
-@Table(name = "language")
-public class Language extends Model {
+public class Language {
 
-    @Column(name = "lang_code", index = true)
-    public String code;
-
-    @Column(name = "lang_name")
-    public String name;
-
-    public Language() {
-        super();
-    }
+    final public String code;
+    final public String name;
 
     public Language(String code, String name) {
-        super();
         this.code = code;
         this.name = name;
     }

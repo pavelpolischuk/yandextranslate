@@ -9,6 +9,7 @@ import android.support.v7.app.AlertDialog;
 
 import com.gcteam.yandextranslate.R;
 import com.gcteam.yandextranslate.domain.Language;
+import com.gcteam.yandextranslate.services.LanguagesService;
 
 /**
  * Created by turist on 09.04.2017.
@@ -20,14 +21,19 @@ public class SelectLanguageDialog extends DialogFragment {
     private final static String LANGUAGES_CODES_KEY = "languages_codes_list";
 
     private Callback callback;
-    private int code;
+    private int returnCode;
 
     interface Callback {
-        void onSelect(Language language, int code);
+        void onSelect(Language language, int returnCode);
     }
 
-    public static SelectLanguageDialog create(Language[] languages, Callback callback, int code) {
+    public static SelectLanguageDialog create(Callback callback, int returnCode) {
         SelectLanguageDialog dialog = new SelectLanguageDialog();
+
+        LanguagesService languagesService = LanguagesService.get();
+        Language[] languages = languagesService != null
+                ? languagesService.sortedLanguages()
+                : new Language[]{};
 
         Bundle arg = new Bundle();
         String[] codes = new String[languages.length];
@@ -42,7 +48,7 @@ public class SelectLanguageDialog extends DialogFragment {
         arg.putCharSequenceArray(LANGUAGES_NAMES_KEY, names);
         dialog.setArguments(arg);
         dialog.callback = callback;
-        dialog.code = code;
+        dialog.returnCode = returnCode;
 
         return dialog;
     }
@@ -59,7 +65,7 @@ public class SelectLanguageDialog extends DialogFragment {
         builder.setItems(names, new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                callback.onSelect(new Language(codes[which], names[which].toString()), code);
+                callback.onSelect(new Language(codes[which], names[which].toString()), returnCode);
             }});
 
         builder.setNegativeButton(android.R.string.cancel, null);
