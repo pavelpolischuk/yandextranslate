@@ -3,7 +3,6 @@ package com.gcteam.yandextranslate.bookmarks;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
-import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,11 +21,13 @@ import com.jakewharton.rxbinding2.widget.RxTextView;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import at.markushi.ui.CircleButton;
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.BiFunction;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function3;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -38,7 +39,7 @@ public class BookmarksFragment extends RxKnifeFragment {
     @BindView(R.id.list) RecyclerView recycler_view;
     @BindView(R.id.tabs) TabLayout tab_layout;
     @BindView(R.id.search_text) EditText search_text;
-    @BindView(R.id.search_clear) AppCompatImageButton search_clear;
+    @BindView(R.id.search_clear) CircleButton search_clear;
 
 
     @OnClick(R.id.search_clear)
@@ -52,13 +53,20 @@ public class BookmarksFragment extends RxKnifeFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        adapter = new BookmarksAdapter(getContext(), HistoryService.get().all());
+        adapter = new BookmarksAdapter(getContext(), HistoryService.get().get(false));
     }
 
-    BiFunction<CharSequence, Integer, List<History>> requestToHistoryService = new BiFunction<CharSequence, Integer, List<History>>() {
+    Function3<CharSequence, Integer, Integer, List<History>> requestToHistoryService = new Function3<CharSequence, Integer, Integer, List<History>>() {
         @Override
-        public List<History> apply(CharSequence charSequence, Integer integer) throws Exception {
+        public List<History> apply(CharSequence charSequence, Integer integer, Integer v) throws Exception {
             return HistoryService.get().get(charSequence.toString(), integer == 1);
+        }
+    };
+
+    Consumer<Integer> tabSelectionToSearchHint = new Consumer<Integer>() {
+        @Override
+        public void accept(Integer position) throws Exception {
+            search_text.setHint(position == 1 ? R.string.bookmarks_search_text : R.string.history_search_text);
         }
     };
 
@@ -74,6 +82,12 @@ public class BookmarksFragment extends RxKnifeFragment {
 
         Observable<Integer> tabChanges = RxTabLayout.selectedChanges(tab_layout);
 
+        Observable<Integer> modelUpdates = HistoryService.get().updates();
+
+        save(tabChanges.observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(tabSelectionToSearchHint));
+
         save(textChanges
                 .map(RxHelpers.CharsNotEmpty)
                 .distinctUntilChanged()
@@ -81,11 +95,10 @@ public class BookmarksFragment extends RxKnifeFragment {
                 .subscribeOn(Schedulers.io())
                 .subscribe(RxView.visibility(search_clear)));
 
-        save(Observable.combineLatest(textChanges, tabChanges, requestToHistoryService)
+        save(Observable.combineLatest(textChanges, tabChanges, modelUpdates, requestToHistoryService)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(adapter));
-
 
         return view;
     }

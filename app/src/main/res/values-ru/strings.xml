@@ -14,8 +14,11 @@
     <string name="bookmark_added">Закладка добавлена</string>
     <string name="nothing_to_save">Нечего сохранить</string>
     
-    <string name="connection_error_when_start">Ошибка в соединении с сервером.\n\nПеревод не доступен.\n\nКликните на экран, чтобы попробовать снова.</string>
+    <string name="connection_error_when_start">Ошибка в соединении с сервером.\nПеревод не доступен.</string>
+    <string name="reconnect">Подключиться снова</string>
     <string name="history_search_text">Найти в истории</string>
     <string name="bookmarks_search_text">Найти в закладках</string>
+
+    <string name="translate_source_hint">Текст для перевода</string>
 
 </resources>

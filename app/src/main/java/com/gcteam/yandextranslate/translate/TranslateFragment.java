@@ -3,15 +3,14 @@ package com.gcteam.yandextranslate.translate;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.AppCompatImageButton;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gcteam.yandextranslate.R;
 import com.gcteam.yandextranslate.api.dto.Translation;
@@ -29,6 +28,7 @@ import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import java.util.concurrent.TimeUnit;
 
+import at.markushi.ui.CircleButton;
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.Observable;
@@ -49,7 +49,7 @@ public class TranslateFragment extends RxKnifeFragment
 
     @BindView(R.id.source_language) AppCompatButton source_language;
     @BindView(R.id.target_language) AppCompatButton target_language;
-    @BindView(R.id.clear_source) AppCompatImageButton clear_source;
+    @BindView(R.id.clear_source) CircleButton clear_source;
     @BindView(R.id.source_text) EditText source_text;
     @BindView(R.id.translation) TextView translation_text;
 
@@ -125,7 +125,7 @@ public class TranslateFragment extends RxKnifeFragment
 
         Observable<CharSequence> textChanges = RxTextView.textChanges(source_text)
                 .skipInitialValue()
-                .debounce(200, TimeUnit.MILLISECONDS);
+                .debounce(300, TimeUnit.MILLISECONDS);
 
         save(textChanges
                 .map(RxHelpers.CharsNotEmpty)
@@ -134,10 +134,10 @@ public class TranslateFragment extends RxKnifeFragment
                 .subscribeOn(Schedulers.io())
                 .subscribe(RxView.visibility(clear_source)));
 
-        Observable<Translation> translations = Observable.switchOnNext(textChanges
-                .debounce(400, TimeUnit.MILLISECONDS)
-                .observeOn(Schedulers.io())
-                .map(translateService.translate()))
+        Observable<Translation> translations = Observable.switchOnNextDelayError(
+                textChanges
+                    .observeOn(Schedulers.io())
+                    .map(translateService.translate()))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
 
@@ -147,7 +147,7 @@ public class TranslateFragment extends RxKnifeFragment
         save(translations
                 .filter(RxHelpers.TranslationNotEmpty)
                 .map(RxHelpers.TranslationToHistory)
-                .debounce(1500, TimeUnit.MILLISECONDS)
+                .debounce(2500, TimeUnit.MILLISECONDS)
                 .distinct(RxHelpers.HistorySource)
                 .subscribe(HistoryService.get()));
 
@@ -203,9 +203,6 @@ public class TranslateFragment extends RxKnifeFragment
     }
 
     private void showMessage(@StringRes int messageId) {
-        View view = getView();
-        if(view != null) {
-            Snackbar.make(view, messageId, Snackbar.LENGTH_LONG).show();
-        }
+        Toast.makeText(getContext(), messageId, Toast.LENGTH_LONG).show();
     }
 }

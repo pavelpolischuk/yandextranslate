@@ -11,16 +11,21 @@ import com.activeandroid.annotation.Table;
 @Table(name = "history")
 public class History extends Model {
 
-    @Column(name = "source_text", index = true)
+    public static final String SOURCE_FIELD = "source_text";
+    public static final String TRANSLATION_FIELD = "translation";
+    public static final String DIRECTION_FIELD = "direction";
+    public static final String BOOKMARK_FIELD = "is_bookmark";
+
+    @Column(name = SOURCE_FIELD, index = true)
     public String sourceText;
 
-    @Column
+    @Column(name = TRANSLATION_FIELD)
     public String translation;
 
-    @Column
+    @Column(name = DIRECTION_FIELD)
     public String direction;
 
-    @Column(name = "is_bookmark")
+    @Column(name = BOOKMARK_FIELD)
     public boolean isBookmark;
 
     public History() {

@@ -3,9 +3,11 @@ package com.gcteam.yandextranslate.utils;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 
+import com.jakewharton.rxbinding2.InitialValueObservable;
+
 import io.reactivex.Observable;
 import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.android.MainThreadDisposable;
 
 /**
  * Created by turist on 13.04.2017.
@@ -17,20 +19,45 @@ public class RxTabLayout {
         return new RxTabSelectedObservable(tabLayout);
     }
 
-    private static class RxTabSelectedObservable extends Observable<Integer>
-            implements Disposable, TabLayout.OnTabSelectedListener {
+    private static class RxTabSelectedObservable extends InitialValueObservable<Integer> {
 
-        TabLayout tabLayout;
-        Observer<? super Integer> observer;
+        private final TabLayout tabLayout;
 
         RxTabSelectedObservable(@NonNull TabLayout tabLayout) {
             this.tabLayout = tabLayout;
-            this.tabLayout.addOnTabSelectedListener(this);
+        }
+
+        @Override
+        protected void subscribeListener(Observer<? super Integer> observer) {
+            Listener listener = new Listener(tabLayout, observer);
+            observer.onSubscribe(listener);
+            tabLayout.addOnTabSelectedListener(listener);
+        }
+
+        @Override
+        protected Integer getInitialValue() {
+            return tabLayout.getSelectedTabPosition();
+        }
+    }
+
+    final static class Listener extends MainThreadDisposable implements TabLayout.OnTabSelectedListener {
+
+        private final TabLayout tabLayout;
+        private final Observer<? super Integer> observer;
+
+        Listener(TabLayout tabLayout, Observer<? super Integer> observer) {
+            this.tabLayout = tabLayout;
+            this.observer = observer;
+        }
+
+        @Override
+        protected void onDispose() {
+            tabLayout.removeOnTabSelectedListener(this);
         }
 
         @Override
         public void onTabSelected(TabLayout.Tab tab) {
-            if (observer != null) {
+            if (!isDisposed()) {
                 observer.onNext(tab.getPosition());
             }
         }
@@ -41,30 +68,6 @@ public class RxTabLayout {
 
         @Override
         public void onTabReselected(TabLayout.Tab tab) {
-        }
-
-        @Override
-        protected void subscribeActual(Observer<? super Integer> observer) {
-            this.observer = observer;
-            this.observer.onSubscribe(this);
-            this.observer.onNext(this.tabLayout.getSelectedTabPosition());
-        }
-
-        @Override
-        public void dispose() {
-            if(tabLayout != null) {
-                tabLayout.removeOnTabSelectedListener(this);
-                tabLayout = null;
-            }
-
-            if(observer != null) {
-                observer = null;
-            }
-        }
-
-        @Override
-        public boolean isDisposed() {
-            return tabLayout == null;
         }
     }
 }

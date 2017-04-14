@@ -6,21 +6,28 @@
     <LinearLayout android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:layout_margin="@dimen/fragment_margin">
 
         <ProgressBar android:id="@+id/progress"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"/>
+            android:layout_height="wrap_content"/>
 
         <TextView android:id="@+id/placeholder"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="8dp"
             android:text="@string/connection_error_when_start"
-            android:textSize="18sp"
-            android:visibility="gone"/>
+            android:textSize="18sp"/>
+
+        <Button android:id="@+id/reconnect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/reconnect"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:layout_gravity="center"/>
 
     </LinearLayout>
 

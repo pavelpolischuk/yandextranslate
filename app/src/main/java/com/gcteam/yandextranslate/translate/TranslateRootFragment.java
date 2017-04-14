@@ -7,13 +7,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.gcteam.yandextranslate.R;
 import com.gcteam.yandextranslate.services.LanguagesService;
 import com.gcteam.yandextranslate.utils.RxKnifeFragment;
 
+import java.util.List;
+
 import butterknife.BindView;
+import butterknife.BindViews;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -27,10 +30,10 @@ import io.reactivex.schedulers.Schedulers;
 public class TranslateRootFragment extends RxKnifeFragment
         implements Observer<LanguagesService> {
 
-    @BindView(R.id.placeholder) TextView placeholder;
     @BindView(R.id.progress) ProgressBar progress;
+    @BindViews({ R.id.placeholder, R.id.reconnect}) List<View> when_error;
 
-    @OnClick(R.id.placeholder)
+    @OnClick(R.id.reconnect)
     void reconnect() {
         LanguagesService.get(getContext())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -39,10 +42,19 @@ public class TranslateRootFragment extends RxKnifeFragment
         showProgress();
     }
 
+    static final ButterKnife.Setter<View, Integer> VISIBILITY = new ButterKnife.Setter<View, Integer>() {
+        @Override public void set(View view, Integer value, int index) {
+            view.setVisibility(value);
+        }
+    };
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = bind(inflater.inflate(R.layout.fragment_translate_root, container, false));
+
+        ButterKnife.apply(when_error, VISIBILITY, View.GONE);
+        progress.setVisibility(View.GONE);
 
         reconnect();
 
@@ -51,12 +63,12 @@ public class TranslateRootFragment extends RxKnifeFragment
 
     private void showProgress() {
         progress.setVisibility(View.VISIBLE);
-        placeholder.setVisibility(View.GONE);
+        ButterKnife.apply(when_error, VISIBILITY, View.GONE);
     }
 
     private void showMessage() {
         progress.setVisibility(View.GONE);
-        placeholder.setVisibility(View.VISIBLE);
+        ButterKnife.apply(when_error, VISIBILITY, View.VISIBLE);
     }
 
     private void showFragment() {
