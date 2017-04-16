@@ -123,11 +123,11 @@ public class TranslateFragment extends RxKnifeFragment
                 .subscribeOn(Schedulers.io())
                 .subscribe(directionConsumer));
 
-        Observable<CharSequence> textChanges = RxTextView.textChanges(source_text)
-                .skipInitialValue()
-                .debounce(300, TimeUnit.MILLISECONDS);
+        final Observable<CharSequence> textChanges = RxTextView.textChanges(source_text)
+                .skipInitialValue();
 
         save(textChanges
+                .debounce(300, TimeUnit.MILLISECONDS)
                 .map(RxHelpers.CharsNotEmpty)
                 .distinctUntilChanged()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -136,6 +136,7 @@ public class TranslateFragment extends RxKnifeFragment
 
         Observable<Translation> translations = Observable.switchOnNextDelayError(
                 textChanges
+                    .debounce(300, TimeUnit.MILLISECONDS)
                     .observeOn(Schedulers.io())
                     .map(translateService.translate()))
                 .observeOn(AndroidSchedulers.mainThread())
@@ -144,12 +145,12 @@ public class TranslateFragment extends RxKnifeFragment
         save(translations
                 .subscribe(translationConsumer, this));
 
-        save(translations
+        save(Observable.combineLatest(translations, textChanges, RxHelpers.SelectTranslation)
+                .debounce(2, TimeUnit.SECONDS)
                 .filter(RxHelpers.TranslationNotEmpty)
                 .map(RxHelpers.TranslationToHistory)
-                .debounce(2500, TimeUnit.MILLISECONDS)
                 .distinct(RxHelpers.HistorySource)
-                .subscribe(HistoryService.get()));
+                .subscribe(HistoryService.get(), this));
 
         return view;
     }

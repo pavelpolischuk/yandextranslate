@@ -1,13 +1,13 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/root_frame" >
+    android:id="@+id/root_frame">
 
     <LinearLayout android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:layout_margin="@dimen/fragment_margin">
+        android:padding="8dp">
 
         <ProgressBar android:id="@+id/progress"
             android:layout_width="match_parent"

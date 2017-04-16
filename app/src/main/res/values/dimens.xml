@@ -1,4 +1,0 @@
-<resources>
-    <dimen name="fragment_margin">8dp</dimen>
-    <dimen name="list_item_padding">8dp</dimen>
-</resources>

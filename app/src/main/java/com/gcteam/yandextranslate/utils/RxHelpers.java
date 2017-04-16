@@ -3,6 +3,7 @@ package com.gcteam.yandextranslate.utils;
 import com.gcteam.yandextranslate.api.dto.Translation;
 import com.gcteam.yandextranslate.domain.History;
 
+import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 
@@ -15,7 +16,7 @@ public class RxHelpers {
     public static final Predicate<Translation> TranslationNotEmpty = new Predicate<Translation>() {
         @Override
         public boolean test(Translation translation) throws Exception {
-            return !translation.isEmpty();
+            return translation != null && !translation.isEmpty();
         }
     };
 
@@ -37,6 +38,13 @@ public class RxHelpers {
         @Override
         public History.SourceKey apply(History history) throws Exception {
             return new History.SourceKey(history);
+        }
+    };
+
+    public static final BiFunction<Translation, Object, Translation> SelectTranslation = new BiFunction<Translation, Object, Translation>() {
+        @Override
+        public Translation apply(Translation translation, Object o) throws Exception {
+            return translation;
         }
     };
 }

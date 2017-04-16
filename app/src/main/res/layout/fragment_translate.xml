@@ -55,8 +55,8 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/fragment_margin"
-                android:paddingRight="@dimen/fragment_margin">
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp">
                 <EditText android:id="@+id/source_text"
                     android:layout_width="0dp"
                     android:layout_weight="0.9"
@@ -89,7 +89,7 @@
         <LinearLayout android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="@dimen/fragment_margin">
+            android:padding="8dp">
 
             <TextView android:id="@+id/translation"
                 android:layout_width="0dp"

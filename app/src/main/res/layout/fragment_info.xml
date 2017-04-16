@@ -26,8 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="?android:attr/actionBarSize"
-        android:background="@color/background"
-        android:padding="@dimen/fragment_margin">
+        android:background="@color/background">
 
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>
