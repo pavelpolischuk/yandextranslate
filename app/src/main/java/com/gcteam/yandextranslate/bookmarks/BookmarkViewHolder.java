@@ -12,18 +12,27 @@ import com.gcteam.yandextranslate.domain.History;
  * Created by turist on 12.04.2017.
  */
 
-class BookmarkViewHolder extends RecyclerView.ViewHolder {
+class BookmarkViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     private AppCompatImageView bookmark_image;
     private TextView source;
     private TextView translation;
     private TextView direction;
 
+    private OnClickListener clickListener;
+
     private static int bookmarkColor = 0xe0c155;
     private static int notBookmarkColor = 0x757575;
 
-    BookmarkViewHolder(View itemView) {
+    interface OnClickListener {
+        void onClick(int position);
+    }
+
+    BookmarkViewHolder(View itemView, OnClickListener clickListener) {
         super(itemView);
+
+        this.clickListener = clickListener;
+        itemView.setOnClickListener(this);
 
         bookmark_image = (AppCompatImageView)itemView.findViewById(R.id.bookmark_image);
         source = (TextView)itemView.findViewById(R.id.source);
@@ -41,5 +50,12 @@ class BookmarkViewHolder extends RecyclerView.ViewHolder {
         translation.setText(history.translation);
         direction.setText(history.direction);
         bookmark_image.setColorFilter(history.isBookmark ? bookmarkColor : notBookmarkColor);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(clickListener != null) {
+            clickListener.onClick(getAdapterPosition());
+        }
     }
 }

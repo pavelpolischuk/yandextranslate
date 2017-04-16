@@ -1,6 +1,5 @@
 package com.gcteam.yandextranslate.services;
 
-import com.activeandroid.annotation.Table;
 import com.activeandroid.query.From;
 import com.activeandroid.query.Select;
 import com.gcteam.yandextranslate.domain.History;
@@ -17,7 +16,7 @@ import io.reactivex.subjects.PublishSubject;
 
 public class HistoryService implements Consumer<History> {
 
-    private static final String ADDED_ORDER = Table.DEFAULT_ID_NAME + " DESC";
+    private static final String LAST_TRANSLATED_ORDER = History.LAST_TRANSLATED_FIELD + " DESC";
     private static final String SOURCE_ORDER = History.SOURCE_FIELD + " ASC";
 
     private static final String SOURCE_EQUAL = History.SOURCE_FIELD + " = ?";
@@ -40,23 +39,31 @@ public class HistoryService implements Consumer<History> {
         return Instance;
     }
 
-    public void addNew(History history) {
-        if(like(history) == null) {
-            history.save();
-            notifyChanges();
-        }
+    public void save(History history) {
+        history.save();
+        notifyChanges();
     }
 
-    public void save(History history) {
+    public void addOrSave(History history, boolean changeBookmark) {
         History old = like(history);
 
         if(old == null) {
             history.save();
         } else {
-            old.isBookmark = history.isBookmark;
+            old.timestamp = history.timestamp;
+
+            if(changeBookmark) {
+                old.isBookmark = history.isBookmark;
+            }
+
             old.save();
         }
 
+        notifyChanges();
+    }
+
+    public void remove(History history) {
+        history.delete();
         notifyChanges();
     }
 
@@ -91,7 +98,7 @@ public class HistoryService implements Consumer<History> {
                     .execute();
         }
 
-        return from.orderBy(ADDED_ORDER)
+        return from.orderBy(LAST_TRANSLATED_ORDER)
                 .execute();
     }
 
@@ -105,6 +112,6 @@ public class HistoryService implements Consumer<History> {
 
     @Override
     public void accept(History history) throws Exception {
-        addNew(history);
+        addOrSave(history, false);
     }
 }

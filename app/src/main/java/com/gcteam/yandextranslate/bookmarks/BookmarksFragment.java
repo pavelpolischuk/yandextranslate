@@ -15,7 +15,6 @@ import com.gcteam.yandextranslate.services.HistoryService;
 import com.gcteam.yandextranslate.utils.RxHelpers;
 import com.gcteam.yandextranslate.utils.RxKnifeFragment;
 import com.gcteam.yandextranslate.utils.RxTabLayout;
-import com.jakewharton.rxbinding2.view.RxView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import java.util.List;
@@ -34,7 +33,8 @@ import io.reactivex.schedulers.Schedulers;
  * Created by turist on 05.04.2017.
  */
 
-public class BookmarksFragment extends RxKnifeFragment {
+public class BookmarksFragment extends RxKnifeFragment
+        implements BookmarksAdapter.OnItemClickListener {
 
     @BindView(R.id.list) RecyclerView recycler_view;
     @BindView(R.id.tabs) TabLayout tab_layout;
@@ -53,7 +53,7 @@ public class BookmarksFragment extends RxKnifeFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        adapter = new BookmarksAdapter(getContext(), HistoryService.get().get(false));
+        adapter = new BookmarksAdapter(getContext(), HistoryService.get().get(false), this);
     }
 
     Function3<CharSequence, Integer, Integer, List<History>> requestToHistoryService = new Function3<CharSequence, Integer, Integer, List<History>>() {
@@ -77,25 +77,19 @@ public class BookmarksFragment extends RxKnifeFragment {
         View view = bind(inflater.inflate(R.layout.fragment_bookmarks, container, false));
         initView();
 
-        Observable<CharSequence> textChanges = RxTextView.textChanges(search_text)
-                .debounce(300, TimeUnit.MILLISECONDS);
-
+        Observable<CharSequence> textChanges = RxTextView.textChanges(search_text);
         Observable<Integer> tabChanges = RxTabLayout.selectedChanges(tab_layout);
-
-        Observable<Integer> modelUpdates = HistoryService.get().updates();
+        Observable<Integer> modelUpdates = HistoryService.get().updates().startWith(0);
 
         save(tabChanges.observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(tabSelectionToSearchHint));
 
-        save(textChanges
-                .map(RxHelpers.CharsNotEmpty)
-                .distinctUntilChanged()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(RxView.visibility(search_clear)));
+        save(RxHelpers.subscribeViewVisibleOnNotEmptyText(textChanges, search_clear));
 
-        save(Observable.combineLatest(textChanges, tabChanges, modelUpdates, requestToHistoryService)
+        save(Observable.combineLatest(textChanges.debounce(300, TimeUnit.MILLISECONDS),
+                                      tabChanges,
+                                      modelUpdates, requestToHistoryService)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(adapter));
@@ -113,5 +107,10 @@ public class BookmarksFragment extends RxKnifeFragment {
         tab_layout.addTab(tab);
 
         recycler_view.setAdapter(adapter);
+    }
+
+    @Override
+    public void onClick(History item) {
+        BookmarkDialog.show(getContext(), item);
     }
 }

@@ -4,6 +4,8 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
+import java.util.Calendar;
+
 /**
  * Created by turist on 10.04.2017.
  */
@@ -15,6 +17,7 @@ public class History extends Model {
     public static final String TRANSLATION_FIELD = "translation";
     public static final String DIRECTION_FIELD = "direction";
     public static final String BOOKMARK_FIELD = "is_bookmark";
+    public static final String LAST_TRANSLATED_FIELD = "last_translated";
 
     @Column(name = SOURCE_FIELD, index = true)
     public String sourceText;
@@ -28,6 +31,9 @@ public class History extends Model {
     @Column(name = BOOKMARK_FIELD)
     public boolean isBookmark;
 
+    @Column(name = LAST_TRANSLATED_FIELD)
+    public long timestamp;
+
     public History() {
         super();
     }
@@ -38,6 +44,7 @@ public class History extends Model {
         this.translation = translation;
         this.direction = direction;
         this.isBookmark = isBookmark;
+        this.timestamp = Calendar.getInstance().getTimeInMillis();
     }
 
     public static class SourceKey {

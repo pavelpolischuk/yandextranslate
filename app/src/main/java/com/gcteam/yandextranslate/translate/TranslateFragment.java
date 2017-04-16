@@ -88,7 +88,8 @@ public class TranslateFragment extends RxKnifeFragment
             return;
         }
 
-        HistoryService.get().save(new History(source, translation, currentDirection.toString(), true));
+        History history = new History(source, translation, currentDirection.toString(), true);
+        HistoryService.get().addOrSave(history, true);
         showMessage(R.string.bookmark_added);
     }
 
@@ -123,16 +124,11 @@ public class TranslateFragment extends RxKnifeFragment
                 .subscribeOn(Schedulers.io())
                 .subscribe(directionConsumer));
 
-        final Observable<CharSequence> textChanges = RxTextView.textChanges(source_text)
+        Observable<CharSequence> textChanges = RxTextView.textChanges(source_text)
                 .skipInitialValue();
 
-        save(textChanges
-                .debounce(300, TimeUnit.MILLISECONDS)
-                .map(RxHelpers.CharsNotEmpty)
-                .distinctUntilChanged()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(RxView.visibility(clear_source)));
+
+        save(RxHelpers.subscribeViewVisibleOnNotEmptyText(textChanges, clear_source));
 
         Observable<Translation> translations = Observable.switchOnNextDelayError(
                 textChanges

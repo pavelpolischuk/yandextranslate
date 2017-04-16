@@ -4,7 +4,8 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp">
+    android:padding="8dp"
+    android:background="@drawable/list_item_color_state">
 
     <android.support.v7.widget.AppCompatImageView android:id="@+id/bookmark_image"
         android:layout_width="36dp"

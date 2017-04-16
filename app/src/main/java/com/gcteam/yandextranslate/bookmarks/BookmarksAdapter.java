@@ -18,11 +18,17 @@ import io.reactivex.functions.Consumer;
  */
 
 public class BookmarksAdapter extends RecyclerView.Adapter<BookmarkViewHolder>
-        implements Consumer<List<History>> {
+        implements Consumer<List<History>>, BookmarkViewHolder.OnClickListener {
 
+    interface OnItemClickListener {
+        void onClick(History item);
+    }
+
+    private OnItemClickListener clickListener;
     private List<History> items;
 
-    BookmarksAdapter(Context context, List<History> items) {
+    BookmarksAdapter(Context context, List<History> items, OnItemClickListener listener) {
+        this.clickListener = listener;
         this.items = items;
 
         Resources resources = context.getResources();
@@ -34,7 +40,7 @@ public class BookmarksAdapter extends RecyclerView.Adapter<BookmarkViewHolder>
     @Override
     public BookmarkViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new BookmarkViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.history_list_item, parent, false));
+                .inflate(R.layout.history_list_item, parent, false), this);
     }
 
     @Override
@@ -52,5 +58,12 @@ public class BookmarksAdapter extends RecyclerView.Adapter<BookmarkViewHolder>
     public void accept(List<History> histories) throws Exception {
         items = histories;
         notifyDataSetChanged();
+    }
+
+    @Override
+    public void onClick(int position) {
+        if(clickListener != null) {
+            clickListener.onClick(items.get(position));
+        }
     }
 }

@@ -1,11 +1,20 @@
 package com.gcteam.yandextranslate.utils;
 
+import android.view.View;
+
 import com.gcteam.yandextranslate.api.dto.Translation;
 import com.gcteam.yandextranslate.domain.History;
+import com.jakewharton.rxbinding2.view.RxView;
 
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by turist on 12.04.2017.
@@ -47,4 +56,14 @@ public class RxHelpers {
             return translation;
         }
     };
+
+    public static Disposable subscribeViewVisibleOnNotEmptyText(Observable<CharSequence> source, View view) {
+        return source
+                .debounce(300, TimeUnit.MILLISECONDS)
+                .map(RxHelpers.CharsNotEmpty)
+                .distinctUntilChanged()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(RxView.visibility(view));
+    }
 }

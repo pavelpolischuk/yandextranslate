@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp">
+
+        <at.markushi.ui.CircleButton android:id="@+id/bookmark"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:paddingTop="4dp"
+        android:paddingLeft="6dp"
+        android:paddingRight="6dp"
+        android:paddingBottom="12dp"
+        android:src="@drawable/ic_bookmark_black_36dp"
+        android:tint="@color/dark"
+        android:layout_gravity="center"
+        app:cb_color="@color/grey"
+        app:cb_pressedRingWidth="32dp"/>
+
+        <TextView android:id="@+id/bookmark_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-12dp"
+            android:textSize="12sp"
+            android:layout_gravity="center"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp">
+
+        <at.markushi.ui.CircleButton android:id="@+id/delete"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:paddingTop="2dp"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp"
+            android:paddingBottom="12dp"
+            android:src="@drawable/ic_delete_forever_black_36dp"
+            android:tint="@color/dark"
+            android:layout_gravity="center"
+            app:cb_color="@color/grey"
+            app:cb_pressedRingWidth="32dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-12dp"
+            android:textSize="12sp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/remove"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp">
+
+        <at.markushi.ui.CircleButton android:id="@+id/cancel"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:paddingTop="2dp"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp"
+            android:paddingBottom="12dp"
+            android:src="@drawable/ic_clear_black_36dp"
+            android:tint="@color/dark"
+            android:layout_gravity="center"
+            app:cb_color="@color/grey"
+            app:cb_pressedRingWidth="32dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-12dp"
+            android:textSize="12sp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@android:string/cancel"/>
+
+    </LinearLayout>
+    
+</LinearLayout>
