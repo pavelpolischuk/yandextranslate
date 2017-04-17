@@ -23,7 +23,6 @@ import com.gcteam.yandextranslate.services.TranslateService;
 import com.gcteam.yandextranslate.utils.RxKnifeFragment;
 import com.gcteam.yandextranslate.utils.RxHelpers;
 import com.gcteam.yandextranslate.utils.TranslatePreference;
-import com.jakewharton.rxbinding2.view.RxView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import java.util.concurrent.TimeUnit;
@@ -110,6 +109,11 @@ public class TranslateFragment extends RxKnifeFragment
         }
     };
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
 
     @Nullable
     @Override

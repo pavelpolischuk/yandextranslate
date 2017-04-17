@@ -18,6 +18,7 @@ public class BookmarkDialog {
     public static void show(Context context, History item) {
         Dialog dialog = new Dialog(context);
 
+        dialog.setTitle(R.string.bookmark_actions);
         dialog.setContentView(R.layout.dialog_bookmark);
 
         Listener listener = new Listener(dialog, item);
@@ -25,8 +26,9 @@ public class BookmarkDialog {
         dialog.findViewById(R.id.delete).setOnClickListener(listener);
         dialog.findViewById(R.id.cancel).setOnClickListener(listener);
 
-        ((TextView)dialog.findViewById(R.id.bookmark_text))
-                .setText(item.isBookmark ? R.string.remove_from_bookmarks : R.string.add_to_bookmarks);
+        if(!item.isBookmark) {
+            ((TextView)dialog.findViewById(R.id.bookmark_text)).setText(R.string.add_to_bookmarks);
+        }
 
         dialog.show();
     }

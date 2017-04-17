@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Yandex Translate</string>
     <string name="title_translate">Перевод</string>
     <string name="title_bookmarks">Закладки</string>
     <string name="title_history">История</string>
@@ -24,5 +23,11 @@
     <string name="add_to_bookmarks">Добавить в закладки</string>
     <string name="remove_from_bookmarks">Удалить из закладок</string>
     <string name="remove">Удалить</string>
+
+    <string name="translated_with_yandex">Переведено сервисом «Яндекс.Переводчик»</string>
+
+    <string name="about_app">О приложении</string>
+    <string name="acknowledgment">Кроме того, в данной программе используются сторонние библиотеки:</string>
+    <string name="bookmark_actions">Действия</string>
 
 </resources>

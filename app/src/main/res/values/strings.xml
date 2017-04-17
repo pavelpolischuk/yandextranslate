@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Yandex Translate</string>
+    <string name="app_name" translatable="false">Yandex Translate Sample</string>
 
     <string name="title_translate">Translate</string>
     <string name="title_bookmarks">Bookmarks</string>
@@ -24,5 +24,12 @@
     <string name="add_to_bookmarks">Add to bookmarks</string>
     <string name="remove_from_bookmarks">Remove from bookmarks</string>
     <string name="remove">Remove</string>
+
+    <string name="translated_with_yandex">Translated by service "Yandex.Translator"</string>
+    <string name="yandex_api_address" translatable="false">http://translate.yandex.ru/</string>
+
+    <string name="about_app">About</string>
+    <string name="acknowledgment">Apart from that, this program uses the following third-party libraries:</string>
+    <string name="bookmark_actions">Item actions</string>
 
 </resources>

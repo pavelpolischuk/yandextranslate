@@ -3,7 +3,6 @@ package com.gcteam.yandextranslate;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.gcteam.yandextranslate.bookmarks.BookmarksFragment;
 import com.gcteam.yandextranslate.info.InfoFragment;
@@ -13,7 +12,7 @@ import com.gcteam.yandextranslate.translate.TranslateRootFragment;
  * Created by turist on 05.04.2017.
  */
 
-public class PagerAdapter extends FragmentStatePagerAdapter {
+public class PagerAdapter extends FragmentPagerAdapter {
 
     private final static int PAGE_COUNT = 3;
 

@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity
 
         pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
+        viewPager.setOffscreenPageLimit(3);
         bottomNavigation.setOnNavigationItemSelectedListener(this);
         viewPager.addOnPageChangeListener(this);
     }
