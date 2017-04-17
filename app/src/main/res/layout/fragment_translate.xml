@@ -98,7 +98,8 @@
                 android:layout_height="match_parent"
                 android:textSize="16sp"
                 android:textColor="@color/dark"
-                android:padding="8dp"/>
+                android:padding="8dp"
+                android:freezesText="true"/>
 
             <at.markushi.ui.CircleButton android:id="@+id/add_bookmark"
                 android:layout_width="32dp"

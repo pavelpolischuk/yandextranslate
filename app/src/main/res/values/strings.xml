@@ -6,8 +6,6 @@
     <string name="title_history">History</string>
     <string name="title_info">Information</string>
 
-    <string name="ui_code" translatable="false">en</string>
-
     <string name="select_language">Select language</string>
 
     <string name="translate_error">An error occurred</string>

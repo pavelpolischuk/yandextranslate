@@ -4,17 +4,16 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.Pair;
 
-import com.gcteam.yandextranslate.R;
 import com.gcteam.yandextranslate.api.YandexService;
 import com.gcteam.yandextranslate.api.dto.AvailableLanguages;
 import com.gcteam.yandextranslate.domain.Direction;
 import com.gcteam.yandextranslate.domain.Language;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import io.reactivex.Observable;
@@ -46,7 +45,7 @@ public class LanguagesService implements Serializable {
         };
 
         return YandexService.get()
-                .getLangs(context.getString(R.string.ui_code))
+                .getLangs(Locale.getDefault().getLanguage())
                 .map(createInstance);
     }
 
@@ -81,19 +80,6 @@ public class LanguagesService implements Serializable {
         }
 
         return null;
-    }
-
-
-    public ArrayList<Direction> directions() {
-        ArrayList<Direction> dirs = new ArrayList<>();
-
-        for(int i = 0; i < languages.length; ++i) {
-            for(int j = 0; j < i; ++j) {
-                dirs.add(new Direction(languages[i], languages[j]));
-            }
-        }
-
-        return dirs;
     }
 
     @Nullable
