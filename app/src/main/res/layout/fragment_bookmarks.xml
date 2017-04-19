@@ -46,8 +46,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:textSize="16sp"
-                    android:paddingTop="4dp"
-                    android:paddingBottom="4dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
                     android:inputType="textShortMessage"
                     android:hint="@string/history_search_text"
                     android:background="@color/white">
