@@ -7,9 +7,12 @@ import com.activeandroid.annotation.Table;
 import java.util.Calendar;
 
 /**
+ * Domain class for saving history to SQLite db
+ *
+ * Use ActiveAndroid base class for simplify working with sql
+ *
  * Created by turist on 10.04.2017.
  */
-
 @Table(name = "history")
 public class History extends Model {
 
@@ -47,6 +50,10 @@ public class History extends Model {
         this.timestamp = Calendar.getInstance().getTimeInMillis();
     }
 
+
+    /**
+     * Class is shrink of {@link History}. Need for check that 2 Histories equivalent
+     */
     public static class SourceKey {
 
         private String sourceText;

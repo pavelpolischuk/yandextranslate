@@ -17,6 +17,9 @@ import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 
 /**
+ * Static class with different filtering and mapping function
+ * for working with some reactive streams of this app
+ *
  * Created by turist on 12.04.2017.
  */
 

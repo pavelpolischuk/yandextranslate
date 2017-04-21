@@ -3,7 +3,6 @@ package com.gcteam.yandextranslate.domain;
 /**
  * Created by turist on 07.04.2017.
  */
-
 public class Language {
 
     final public String code;

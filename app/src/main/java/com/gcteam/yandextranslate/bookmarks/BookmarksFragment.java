@@ -30,9 +30,10 @@ import io.reactivex.functions.Function3;
 import io.reactivex.schedulers.Schedulers;
 
 /**
+ * Fragment to show and manage history and bookmarks
+ *
  * Created by turist on 05.04.2017.
  */
-
 public class BookmarksFragment extends RxKnifeFragment
         implements BookmarksAdapter.OnItemClickListener {
 
@@ -76,7 +77,7 @@ public class BookmarksFragment extends RxKnifeFragment
                              @Nullable Bundle savedInstanceState) {
         View view = bind(inflater.inflate(R.layout.fragment_bookmarks, container, false));
         initView();
-
+        
         Observable<CharSequence> textChanges = RxTextView.textChanges(search_text);
         Observable<Integer> tabChanges = RxTabLayout.selectedChanges(tab_layout);
         Observable<Integer> modelUpdates = HistoryService.get().updates().startWith(0);

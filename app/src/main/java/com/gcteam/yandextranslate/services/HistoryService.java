@@ -11,9 +11,12 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.subjects.PublishSubject;
 
 /**
+ * Service for working with history of translating. Save and do query to SQLite db.
+ *
+ * Can notify about changes in db.
+ *
  * Created by turist on 10.04.2017.
  */
-
 public class HistoryService implements Consumer<History> {
 
     private static final String LAST_TRANSLATED_ORDER = History.LAST_TRANSLATED_FIELD + " DESC";
@@ -39,11 +42,17 @@ public class HistoryService implements Consumer<History> {
         return Instance;
     }
 
+    /**
+     * Save changing in history object
+     */
     public void save(History history) {
         history.save();
         notifyChanges();
     }
 
+    /**
+     * Save new or update timestamp and bookmark flag of existing object
+     */
     public void addOrSave(History history, boolean changeBookmark) {
         History old = like(history);
 
@@ -106,6 +115,11 @@ public class HistoryService implements Consumer<History> {
         updateSubject.onNext(0);
     }
 
+    /**
+     * @return Observable with data updating events
+     *
+     * Integer type is needless, make for combine this Observable with others Observables
+     */
     public Observable<Integer> updates() {
         return updateSubject;
     }

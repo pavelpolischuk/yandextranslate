@@ -15,9 +15,10 @@ import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
 /**
+ * Interface for work with Retrofit2, describe requests to Yandex.Translate api with responses
+ *
  * Created by turist on 07.04.2017.
  */
-
 public interface YandexTranslateApi {
 
     @FormUrlEncoded

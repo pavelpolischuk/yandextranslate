@@ -19,6 +19,9 @@ import java.util.Map;
 import io.reactivex.Observable;
 import io.reactivex.functions.Function;
 
+/**
+ * Service with available languages.
+ */
 public class LanguagesService implements Serializable {
 
     private static LanguagesService instance;
@@ -26,11 +29,21 @@ public class LanguagesService implements Serializable {
     private Language[] languages;
     private HashMap<String, Language> mapCodeToName;
 
+
+    /**
+     * @return existing singleton instance of {@link LanguagesService}
+     */
     @Nullable
     public static LanguagesService get() {
         return instance;
     }
 
+
+    /**
+     * @return Observable with singleton instance of {@link LanguagesService}, beforehand (if need) create it.
+     *
+     * To create instance, request languages from server (waiting response released with Observable)
+     */
     public static Observable<LanguagesService> get(Context context) {
         if(instance != null) {
             return Observable.just(instance);

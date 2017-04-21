@@ -11,6 +11,11 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
+ * Service for request Yandex.Translate api
+ *
+ * Using Retrofit2 create instance of interface {@link YandexTranslateApi} and call its methods
+ * Each method return Observable<T> (need subscribe to get response object, when response come from server)
+ *
  * Created by turist on 07.04.2017.
  */
 

@@ -6,9 +6,10 @@ import android.util.Pair;
 import com.gcteam.yandextranslate.domain.Direction;
 
 /**
+ * Store last selected direction
+ *
  * Created by turist on 07.04.2017.
  */
-
 public class TranslatePreference extends PreferenceBase {
 
     static final String SOURCE_KEY = "last_source_language";

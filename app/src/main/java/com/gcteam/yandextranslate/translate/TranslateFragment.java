@@ -38,7 +38,6 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Created by turist on 05.04.2017.
  */
-
 public class TranslateFragment extends RxKnifeFragment
         implements TranslateService.DirectionProvider, SelectLanguageDialog.Callback,
                 Consumer<Throwable> {
@@ -115,6 +114,10 @@ public class TranslateFragment extends RxKnifeFragment
         setRetainInstance(true);
     }
 
+    /**
+     * Here I bind view with class members and methods
+     * And setting reactive event-stream processing
+     */
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,

@@ -5,9 +5,10 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 /**
+ * Helper (base class) for access to Key/Value storage of Android (Preferences)
+ *
  * Created by turist on 07.04.2017.
  */
-
 public class PreferenceBase {
 
     protected final Context context;

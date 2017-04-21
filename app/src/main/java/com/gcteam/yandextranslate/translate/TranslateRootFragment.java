@@ -25,6 +25,10 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
+ * Fragment starting before {@link TranslateFragment} to request languages
+ * and if OK: start {@link TranslateFragment}
+ * else show message about connection problems
+ *
  * Created by turist on 12.04.2017.
  */
 

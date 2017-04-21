@@ -9,11 +9,16 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 
 /**
+ * Service for text translating, use {@link YandexService}
+ *
  * Created by turist on 09.04.2017.
  */
-
 public class TranslateService {
 
+    /**
+     * Need to take actual language direction (everyone, who using {@link TranslateService}, must implement
+     * this interface to Service know direction)
+     */
     public interface DirectionProvider {
         Direction direction();
     }
@@ -24,6 +29,9 @@ public class TranslateService {
         this.provider = provider;
     }
 
+    /**
+     * @return mapping source text to Translate Observable (for {@link Observable#map(Function)})
+     */
     public Function<CharSequence, Observable<Translation>> translate() {
         return new Function<CharSequence, Observable<Translation>>() {
             @Override
@@ -33,6 +41,10 @@ public class TranslateService {
         };
     }
 
+    /**
+     * Translate text
+     * @return Observable with translation result (Observable for async, because request to server)
+     */
     public Observable<Translation> translate(CharSequence charSequence) {
         if(charSequence.length() == 0) {
             return Observable.just(Translation.EMPTY);
